@@ -1,0 +1,140 @@
+{
+  "consumer": {
+    "name": "GoAdminService"
+  },
+  "provider": {
+    "name": "GoUserService"
+  },
+  "interactions": [
+    {
+      "description": "A request to login with user 'sally'",
+      "providerState": "User sally exists",
+      "request": {
+        "method": "GET",
+        "path": "/user/10",
+        "headers": {
+          "Authorization": "Bearer 2019-01-01"
+        },
+        "matchingRules": {
+          "$.path": {
+            "match": "regex",
+            "regex": "\\/user\\/[0-9]+"
+          },
+          "$.headers.Authorization": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "X-Api-Correlation-Id": "100"
+        },
+        "body": {
+          "firstName": "Sally",
+          "id": 10,
+          "lastName": "McSmiley Face😀😍",
+          "type": "admin",
+          "username": "sally"
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/json"
+          },
+          "$.headers.X-Api-Correlation-Id": {
+            "match": "type"
+          },
+          "$.body.firstName": {
+            "match": "type"
+          },
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.lastName": {
+            "match": "type"
+          },
+          "$.body.type": {
+            "match": "regex",
+            "regex": "^(admin|user|guest)$"
+          },
+          "$.body.username": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "A request to login with user 'sally'",
+      "providerState": "User sally does not exist",
+      "request": {
+        "method": "GET",
+        "path": "/user/10",
+        "headers": {
+          "Authorization": "Bearer 2019-01-01"
+        },
+        "matchingRules": {
+          "$.path": {
+            "match": "regex",
+            "regex": "\\/user\\/[0-9]+"
+          },
+          "$.headers.Authorization": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "X-Api-Correlation-Id": "100"
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/json"
+          },
+          "$.headers.X-Api-Correlation-Id": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "A request to login with user 'sally'",
+      "providerState": "User is not authenticated",
+      "request": {
+        "method": "GET",
+        "path": "/user/10",
+        "matchingRules": {
+          "$.path": {
+            "match": "regex",
+            "regex": "\\/user\\/[0-9]+"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8",
+          "X-Api-Correlation-Id": "100"
+        },
+        "matchingRules": {
+          "$.headers.Content-Type": {
+            "match": "regex",
+            "regex": "application\\/json"
+          },
+          "$.headers.X-Api-Correlation-Id": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
